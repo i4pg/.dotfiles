@@ -11,7 +11,7 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "catppuccin"
+lvim.colorscheme = "gruvbox-baby"
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
@@ -61,7 +61,7 @@ lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
 lvim.builtin.nvimtree.setup.view.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 1
+lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -84,6 +84,20 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- generic LSP settings
 
+-- -- make sure server will always be installed even if the server is in skipped_servers list
+-- lvim.lsp.installer.setup.ensure_installed = {
+--     "sumeko_lua",
+--     "jsonls",
+-- }
+-- -- change UI setting of `LspInstallInfo`
+-- -- see <https://github.com/williamboman/nvim-lsp-installer#default-configuration>
+-- lvim.lsp.installer.setup.ui.check_outdated_servers_on_open = false
+-- lvim.lsp.installer.setup.ui.border = "rounded"
+-- lvim.lsp.installer.setup.ui.keymaps = {
+--     uninstall_server = "d",
+--     toggle_server_expand = "o",
+-- }
+
 -- ---@usage disable automatic installation of servers
 -- lvim.lsp.automatic_servers_installation = false
 
@@ -94,7 +108,7 @@ lvim.builtin.treesitter.highlight.enabled = true
 -- require("lvim.lsp.manager").setup("pyright", opts)
 
 -- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
--- ---`:LvimInfo` lists which server(s) are skiipped for the current filetype
+-- ---`:LvimInfo` lists which server(s) are skipped for the current filetype
 -- vim.tbl_map(function(server)
 --   return server ~= "emmet_ls"
 -- end, lvim.lsp.automatic_configuration.skipped_servers)
@@ -145,38 +159,16 @@ lvim.builtin.treesitter.highlight.enabled = true
 
 -- Additional Plugins
 lvim.plugins = {
-  { "catppuccin/nvim", },
-  { "kyazdani42/nvim-web-devicons", },
-  { "lukas-reineke/indent-blankline.nvim", },
-  { "tpope/vim-rails", },
-}
-
-vim.opt.termguicolors = true
-vim.cmd [[highlight IndentBlanklineIndent1 guifg=#E06C75 gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent2 guifg=#E5C07B gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent3 guifg=#98C379 gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent4 guifg=#56B6C2 gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent5 guifg=#61AFEF gui=nocombine]]
-vim.cmd [[highlight IndentBlanklineIndent6 guifg=#C678DD gui=nocombine]]
-
-vim.opt.list = true
-vim.opt.listchars:append("space:⋅")
-vim.opt.listchars:append("eol:↴")
-
-require("indent_blankline").setup {
-  space_char_blankline = " ",
-  char_highlight_list = {
-    "IndentBlanklineIndent1",
-    "IndentBlanklineIndent2",
-    "IndentBlanklineIndent3",
-    "IndentBlanklineIndent4",
-    "IndentBlanklineIndent5",
-    "IndentBlanklineIndent6",
+  { "folke/tokyonight.nvim" },
+  {
+    "folke/trouble.nvim",
+    cmd = "TroubleToggle",
   },
+  { "catppuccin/nvim", as = "catppuccin" },
+  { "lunarvim/colorschemes" },
+  { "sainnhe/gruvbox-material" },
+  { "luisiacc/gruvbox-baby" },
 }
-
-
--- Lua
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
@@ -192,90 +184,7 @@ require("indent_blankline").setup {
 --   end,
 -- })
 
-lvim.transparent_window = true
-lvim.builtin.lualine.style = "default" -- or "none"
-lvim.builtin.lualine.options.theme = "catppuccin"
+-- catppuccin
 vim.g.catppuccin_flavour = "mocha" -- latte, frappe, macchiato, mocha
+require("catppuccin").setup()
 vim.cmd [[colorscheme catppuccin]]
-
-local catppuccin = require("catppuccin")
-
-catppuccin.setup({
-  transparent_background = false,
-  term_colors = false,
-  styles = {
-    comments = "italic",
-    conditionals = "italic",
-    loops = "NONE",
-    functions = "NONE",
-    keywords = "NONE",
-    strings = "NONE",
-    variables = "NONE",
-    numbers = "NONE",
-    booleans = "NONE",
-    properties = "NONE",
-    types = "NONE",
-    operators = "NONE",
-  },
-  integrations = {
-    treesitter = true,
-    native_lsp = {
-      enabled = true,
-      virtual_text = {
-        errors = "italic",
-        hints = "italic",
-        warnings = "italic",
-        information = "italic",
-      },
-      underlines = {
-        errors = "underline",
-        hints = "underline",
-        warnings = "underline",
-        information = "underline",
-      },
-    },
-    lsp_trouble = false,
-    cmp = true,
-    lsp_saga = false,
-    gitgutter = false,
-    gitsigns = true,
-    telescope = true,
-    nvimtree = {
-      enabled = true,
-      show_root = false,
-      transparent_panel = false,
-    },
-    neotree = {
-      enabled = false,
-      show_root = false,
-      transparent_panel = false,
-    },
-    which_key = false,
-    indent_blankline = {
-      enabled = true,
-      colored_indent_levels = false,
-    },
-    dashboard = true,
-    neogit = false,
-    vim_sneak = false,
-    fern = false,
-    barbar = false,
-    bufferline = true,
-    markdown = true,
-    lightspeed = false,
-    ts_rainbow = false,
-    hop = false,
-    notify = true,
-    telekasten = true,
-    symbols_outline = true,
-  },
-  integration = {
-    nvimtree = {
-      enabled = true,
-      show_root = true, -- makes the root folder not transparent
-      transparent_panel = false, -- make the panel transparent
-    }
-  }
-})
--- local cp_api = require("catppuccin.api.<module>")
--- cp_api.get_colors()
